@@ -1,0 +1,100 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Circle area
+      id: circle-area
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Circle area
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.CircleAreaTest
+        timeout: 3
+        max-score: 1
+    - name: Rectangle area
+      id: rectangle-area
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Rectangle area
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.RectangleAreaTest
+        timeout: 3
+        max-score: 1
+    - name: Triangle area
+      id: triangle-area
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Triangle area
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.TriangleAreaTest
+        timeout: 3
+        max-score: 1
+    - name: Polymorphism
+      id: polymorphism
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Polymorphism
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.PolymorphismTest
+        timeout: 3
+        max-score: 1
+    - name: Circle zero
+      id: circle-zero
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Circle zero
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.CircleZeroRadiusTest
+        timeout: 3
+        max-score: 1
+    - name: Rectangle zero
+      id: rectangle-zero
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Rectangle zero
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.RectangleZeroDimensionTest
+        timeout: 3
+        max-score: 1
+    - name: Negative values
+      id: negative-values
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Negative values
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.NegativeValuesHandledTest
+        timeout: 3
+        max-score: 1
+    - name: Large values
+      id: large-values
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Large values
+        setup-command: ''
+        command: gradle -q test --tests com.example.project.LargeValuesTest
+        timeout: 3
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        CIRCLE-AREA_RESULTS: "${{steps.circle-area.outputs.result}}"
+        RECTANGLE-AREA_RESULTS: "${{steps.rectangle-area.outputs.result}}"
+        TRIANGLE-AREA_RESULTS: "${{steps.triangle-area.outputs.result}}"
+        POLYMORPHISM_RESULTS: "${{steps.polymorphism.outputs.result}}"
+        CIRCLE-ZERO_RESULTS: "${{steps.circle-zero.outputs.result}}"
+        RECTANGLE-ZERO_RESULTS: "${{steps.rectangle-zero.outputs.result}}"
+        NEGATIVE-VALUES_RESULTS: "${{steps.negative-values.outputs.result}}"
+        LARGE-VALUES_RESULTS: "${{steps.large-values.outputs.result}}"
+      with:
+        runners: circle-area,rectangle-area,triangle-area,polymorphism,circle-zero,rectangle-zero,negative-values,large-values
