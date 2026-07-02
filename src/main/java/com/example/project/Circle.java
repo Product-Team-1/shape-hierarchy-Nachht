@@ -1,15 +1,26 @@
 package com.example.project;
 
 public class Circle implements Shape {
-    // TODO: add fields as needed
+
+    private double radius;
 
     public Circle(double radius) {
-        // TODO: store parameter(s)
+
+        this.radius = radius;
     }
 
     @Override
     public double getArea() {
-        // TODO: compute and return area
-        return 0;
+
+        // si radius(radio) es 0, retorna 0 ya que no tendria un area.
+        if (radius <= 0){
+            return 0;
+        }
+
+        // Math.PI es el valor de PI(π) aproximadamente, entonces se multiplica PI por el radio dos veces
+        // es decir PI por el radio elevado al cuadrado. por ejemplo si el radio es de 3:
+        // Java calcula 3.14159 * 3 * 3, primer multiplica 3 * 3 = 9 y despues multiplica 3.14159 * 9.
+        // Con esto se obtiene el area del circulo
+        return Math.PI * radius * radius;
     }
 }
